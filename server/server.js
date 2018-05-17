@@ -27,26 +27,21 @@ app.use(function(req, res, next) {
 
 app.get('/spotify/:client_id/:client_secret', (req, resp) => {
 
-    let client_id = req.params.clientid;
+    let client_id = req.params.client_id;
     let client_secret = req.params.client_secret;
     let spotifyUrl = 'https://accounts.spotify.com/api/token';
 
-    let data = {
-        grant_type: 'client_credentials',
-        client_id: client_id,
-        client_secret: client_secret
-    };
-
     var authOptions = {
-        url: 'https://accounts.spotify.com/api/token',
+        url: spotifyUrl,
         headers: {
-            'Authorization': `Basic ${client_id}:${client_secret}`
+            Authorization: 'Basic ' + new Buffer(client_id + ':' + client_secret).toString('base64')
         },
         form: {
             grant_type: 'client_credentials'
         },
         json: true
     };
+
 
     request.post(authOptions, (err, httpResponse, body) => {
 
@@ -58,7 +53,7 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
             })
         }
 
-        resp.json(httpResponse);
+        resp.json(body);
         // resp.json(body);
 
     })

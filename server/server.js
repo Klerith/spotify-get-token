@@ -54,9 +54,8 @@ app.get('/spotify/:client_id/:client_secret', (req, resp) => {
         }
 
         resp.json(body);
-        // resp.json(body);
 
-    })
+    });
 
 });
 
